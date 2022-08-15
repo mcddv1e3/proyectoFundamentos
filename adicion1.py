@@ -38,5 +38,6 @@ i=i+1
 for elige in elegir:    
     Radiobutton(root,text=elige,value=elige,variable=carpetas).grid(row=i)
     i=i+1
+    
 btnEnv=Button(root,text="Guardar",command=lambda:refrescar(carpetas.get(),imagenElegida.get(),i+1)).grid(row=i)
 root.mainloop()
