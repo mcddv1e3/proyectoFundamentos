@@ -4,8 +4,8 @@ from tkinter import filedialog
 import shutil
 import pandas as pd
 import cv2#instalarlo pip install opencv-python
-import openpyxl#en condas no necesite instalarlo pip install openpyxl
-from openpyxl import Workbook
+#import openpyxl#en condas no necesite instalarlo pip install openpyxl
+#from openpyxl import Workbook
 
 
 root=Tk()
@@ -35,7 +35,7 @@ def refrescar(value,value1,i1):
     opcion2=Label(root,text=value1).grid(row=i1+1)
     imagen1=value1.split('/')
     imagen2=imagen1[len(imagen1)-1]
-    shutil.copy(value1,"/Users/LicHernandoSanabria/MODULOII/PROYECTOFINAL/COVID19/"+value+"/images/"+imagen2) 
+    #shutil.copy(value1,"/Users/LicHernandoSanabria/MODULOII/PROYECTOFINAL/COVID19/"+value+"/images/"+imagen2) 
     df=pd.read_excel("COVID19/"+value+".metadata.xlsx")
     #print(df)
     ultimo=df.loc[df.index[-1],"FILE NAME"]
@@ -54,11 +54,19 @@ def refrescar(value,value1,i1):
     extension2=extension1[-1]#extension del archivo de imagen para obtener su tipo
     #print(extension2)
     url1=dlista_urls[value]
+    nuevo_nombre=ultimo_file_name+"."+extension2
+    print(nuevo_nombre)
+    shutil.copy(value1,"/Users/LicHernandoSanabria/MODULOII/PROYECTOFINAL/COVID19/"+value+"/images/"+nuevo_nombre) 
     #print(url1)
-    wb = Workbook()
-    ws = wb.active
-    ws.append([ultimo_file_name, extension2, csize,url1])
-    wb.save("COVID19/"+value+".metadata.xlsx")
+    #wb = Workbook()
+    #ws = wb.active
+    #ws.append([ultimo_file_name, extension2, csize,url1])
+    #wb.save("COVID19/"+value+".metadata.xlsx")
+    nuevo_registro={"FILE NAME":ultimo_file_name,"FORMAT":extension2,"SIZE":csize,"URL":url1}
+    df=df.append(nuevo_registro,ignore_index=True)
+    #print(df)
+    df.to_excel("COVID19/"+value+".metadata.xlsx",index=False)
+    
 i=0
 
 btnEnv=Button(root,text="Leer Archivo",command=select_file).grid(row=i)    
